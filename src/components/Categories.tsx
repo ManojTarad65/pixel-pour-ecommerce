@@ -47,7 +47,8 @@ const Categories = () => {
       opacity: 1,
       transition: {
         duration: 0.8,
-        ease: [0.6, 0.05, -0.01, 0.9]
+        // Fixed the invalid easing value by using a valid easing function
+        ease: [0.6, 0.05, 0.01, 0.9]
       }
     }
   };
