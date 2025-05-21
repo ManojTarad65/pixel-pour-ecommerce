@@ -1,15 +1,34 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { MenuIcon, X, ShoppingCart, Search, User } from 'lucide-react';
+import { MenuIcon, X, ShoppingCart, Search, User, LogIn } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useCart } from '@/contexts/CartContext';
+import { useUser } from '@/contexts/UserContext';
+import SearchDialog from './search/SearchDialog';
+import CartDrawer from './cart/CartDrawer';
+import AuthModal from './auth/AuthModal';
+import { products } from '@/data/products';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const isMobile = useIsMobile();
+  const { totalItems } = useCart();
+  const { user, isAuthenticated, logout } = useUser();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -74,14 +93,60 @@ const Navbar: React.FC = () => {
 
           {/* Icons */}
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="text-navy-800 hover:text-bottle-500">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-navy-800 hover:text-bottle-500"
+              onClick={() => setIsSearchOpen(true)}
+            >
               <Search size={20} />
             </Button>
-            <Button variant="ghost" size="icon" className="text-navy-800 hover:text-bottle-500">
-              <User size={20} />
-            </Button>
-            <Button variant="ghost" size="icon" className="text-navy-800 hover:text-bottle-500">
+            
+            {isAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="text-navy-800 hover:text-bottle-500 relative">
+                    <User size={20} />
+                    <span className="sr-only">User menu</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>
+                    Hello, {user?.name || 'User'}
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <DropdownMenuItem>Orders</DropdownMenuItem>
+                  <DropdownMenuItem>Favorites</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={logout}>
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-navy-800 hover:text-bottle-500"
+                onClick={() => setIsAuthModalOpen(true)}
+              >
+                <LogIn size={20} />
+              </Button>
+            )}
+            
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-navy-800 hover:text-bottle-500 relative"
+              onClick={() => setIsCartOpen(true)}
+            >
               <ShoppingCart size={20} />
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-bottle-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {totalItems > 9 ? '9+' : totalItems}
+                </span>
+              )}
             </Button>
             
             {isMobile && (
@@ -117,9 +182,41 @@ const Navbar: React.FC = () => {
                 {link.name}
               </Link>
             ))}
+            
+            {!isAuthenticated && (
+              <Button 
+                className="w-full"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  setIsAuthModalOpen(true);
+                }}
+              >
+                <LogIn className="mr-2 h-4 w-4" /> Sign In
+              </Button>
+            )}
           </div>
         </motion.div>
       )}
+      
+      {/* Search Dialog */}
+      <SearchDialog 
+        isOpen={isSearchOpen} 
+        onClose={() => setIsSearchOpen(false)} 
+        products={products}
+      />
+      
+      {/* Cart Drawer */}
+      <CartDrawer 
+        open={isCartOpen} 
+        onClose={() => setIsCartOpen(false)}
+      />
+      
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)}
+        onAuthenticate={(user) => useUser().login(user)}
+      />
     </>
   );
 };

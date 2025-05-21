@@ -7,117 +7,36 @@ import { motion } from 'framer-motion';
 import { ShoppingCart } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { toast } from '@/components/ui/sonner';
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  category: string;
-  isNew?: boolean;
-  description: string;
-}
-
-const products: Product[] = [
-  {
-    id: 1,
-    name: "Azure Classic",
-    price: 29.99,
-    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop",
-    category: "Classic",
-    isNew: true,
-    description: "Our bestselling water bottle with a sleek design and double-wall insulation."
-  },
-  {
-    id: 2,
-    name: "Eco Thermal",
-    price: 34.99,
-    image: "https://images.unsplash.com/photo-1581152309595-c304b4d05c14?w=600&auto=format&fit=crop",
-    category: "Thermal",
-    description: "Eco-friendly thermal bottle made from recycled materials."
-  },
-  {
-    id: 3,
-    name: "Summit Insulated",
-    price: 39.99,
-    image: "https://images.unsplash.com/photo-1610631687337-04552bfb8d85?w=600&auto=format&fit=crop",
-    category: "Insulated",
-    description: "Perfect for hiking and outdoor adventures with 24hr temperature retention."
-  },
-  {
-    id: 4,
-    name: "Minimalist Sleek",
-    price: 24.99,
-    image: "https://images.unsplash.com/photo-1610631787330-c3eac43fbf60?w=600&auto=format&fit=crop",
-    category: "Modern",
-    isNew: true,
-    description: "Clean, minimalist design with premium materials for everyday use."
-  },
-  {
-    id: 5,
-    name: "Adventure Pro",
-    price: 42.99,
-    image: "https://images.unsplash.com/photo-1578598336954-4e34b3ba67ef?w=600&auto=format&fit=crop",
-    category: "Sports",
-    description: "Built for adventure with a durable exterior and leak-proof cap."
-  },
-  {
-    id: 6,
-    name: "Urban Glass",
-    price: 32.99,
-    image: "https://images.unsplash.com/photo-1615062631393-99b145f47bea?w=600&auto=format&fit=crop",
-    category: "Glass",
-    description: "Stylish glass bottle with silicone sleeve for urban lifestyles."
-  },
-  {
-    id: 7,
-    name: "Stainless Steel Elite",
-    price: 36.99,
-    image: "https://images.unsplash.com/photo-1556895116-bc12e3005b2f?w=600&auto=format&fit=crop",
-    category: "Stainless Steel",
-    description: "Premium stainless steel bottle that keeps drinks cold for 48 hours."
-  },
-  {
-    id: 8,
-    name: "Kids Explorer",
-    price: 19.99,
-    image: "https://images.unsplash.com/photo-1575366297858-8a5d3c76cc10?w=600&auto=format&fit=crop",
-    category: "Kids",
-    description: "Fun, kid-friendly design with easy-to-use straw and carry handle."
-  }
-];
+import { Link } from 'react-router-dom';
+import { useCart } from '@/contexts/CartContext';
+import { products } from '@/data/products';
 
 const categories = ["All", "Classic", "Thermal", "Insulated", "Modern", "Sports", "Glass", "Stainless Steel", "Kids"];
 
 // This is a basic shop page
 const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [cartItems, setCartItems] = useState<{id: number, quantity: number}[]>([]);
+  const { addToCart } = useCart();
 
   const filteredProducts = selectedCategory === "All" 
     ? products 
     : products.filter(product => product.category === selectedCategory);
 
-  const addToCart = (productId: number) => {
-    const existingItem = cartItems.find(item => item.id === productId);
-    
-    if (existingItem) {
-      setCartItems(cartItems.map(item => 
-        item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
-      ));
-    } else {
-      setCartItems([...cartItems, { id: productId, quantity: 1 }]);
-    }
-    
+  const handleAddToCart = (productId: number) => {
     const product = products.find(p => p.id === productId);
-    toast.success(`${product?.name} added to cart!`);
+    if (product) {
+      addToCart(product);
+    }
   };
 
-  const buyNow = (productId: number) => {
+  const handleBuyNow = (productId: number) => {
     const product = products.find(p => p.id === productId);
-    toast.success(`Processing purchase for ${product?.name}!`, {
-      description: "This would redirect to checkout in a real store."
-    });
+    if (product) {
+      addToCart(product);
+      toast.success(`Processing purchase for ${product?.name}!`, {
+        description: "This would redirect to checkout in a real store."
+      });
+    }
   };
 
   return (
@@ -168,8 +87,8 @@ const Shop = () => {
                 key={product.id} 
                 product={product} 
                 index={index} 
-                addToCart={addToCart}
-                buyNow={buyNow}
+                addToCart={handleAddToCart}
+                buyNow={handleBuyNow}
               />
             ))}
           </div>
@@ -192,7 +111,7 @@ const ProductCard = ({
   addToCart, 
   buyNow 
 }: { 
-  product: Product, 
+  product: any, 
   index: number, 
   addToCart: (id: number) => void,
   buyNow: (id: number) => void
@@ -211,21 +130,25 @@ const ProductCard = ({
               NEW
             </div>
           )}
-          <motion.div 
-            className="aspect-square overflow-hidden rounded-lg bg-gray-100 mb-4"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
-          >
-            <img 
-              src={product.image} 
-              alt={product.name} 
-              className="h-full w-full object-cover object-center" 
-            />
-          </motion.div>
+          <Link to={`/product/${product.id}`}>
+            <motion.div 
+              className="aspect-square overflow-hidden rounded-lg bg-gray-100 mb-4"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+            >
+              <img 
+                src={product.image} 
+                alt={product.name} 
+                className="h-full w-full object-cover object-center" 
+              />
+            </motion.div>
+          </Link>
         </div>
         <div className="p-4 flex-grow flex flex-col">
           <span className="text-xs text-gray-500 uppercase tracking-wider">{product.category}</span>
-          <h3 className="font-semibold text-lg mt-1 text-navy-800">{product.name}</h3>
+          <Link to={`/product/${product.id}`} className="hover:text-bottle-600">
+            <h3 className="font-semibold text-lg mt-1 text-navy-800">{product.name}</h3>
+          </Link>
           <p className="text-sm text-gray-600 mt-2 line-clamp-2">{product.description}</p>
           <div className="mt-auto pt-4">
             <div className="font-medium text-lg mb-3">${product.price.toFixed(2)}</div>
