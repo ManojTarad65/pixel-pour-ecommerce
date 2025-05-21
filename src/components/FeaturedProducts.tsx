@@ -4,50 +4,24 @@ import { motion } from 'framer-motion';
 import { Card } from './ui/card';
 import { Button } from './ui/button';
 import { ShoppingCart } from 'lucide-react';
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  category: string;
-  isNew?: boolean;
-}
-
-const products: Product[] = [
-  {
-    id: 1,
-    name: "Azure Classic",
-    price: 29.99,
-    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop",
-    category: "Classic",
-    isNew: true,
-  },
-  {
-    id: 2,
-    name: "Eco Thermal",
-    price: 34.99,
-    image: "https://images.unsplash.com/photo-1581152309595-c304b4d05c14?w=600&auto=format&fit=crop",
-    category: "Thermal",
-  },
-  {
-    id: 3,
-    name: "Summit Insulated",
-    price: 39.99,
-    image: "https://images.unsplash.com/photo-1610631687337-04552bfb8d85?w=600&auto=format&fit=crop",
-    category: "Insulated",
-  },
-  {
-    id: 4,
-    name: "Minimalist Sleek",
-    price: 24.99,
-    image: "https://images.unsplash.com/photo-1610631787330-c3eac43fbf60?w=600&auto=format&fit=crop",
-    category: "Modern",
-    isNew: true,
-  },
-];
+import { Link } from 'react-router-dom';
+import { useCart } from '@/contexts/CartContext';
+import { products } from '@/data/products';
+import { toast } from '@/components/ui/sonner';
 
 const FeaturedProducts = () => {
+  const { addToCart } = useCart();
+  
+  const featuredProducts = products.slice(0, 4);
+  
+  const handleAddToCart = (productId: number) => {
+    const product = products.find(p => p.id === productId);
+    if (product) {
+      addToCart(product);
+      toast.success(`${product.name} added to cart!`);
+    }
+  };
+
   return (
     <section className="py-20 bg-gray-50" id="featured">
       <div className="container mx-auto px-4">
@@ -65,8 +39,13 @@ const FeaturedProducts = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {products.map((product, index) => (
-            <ProductCard key={product.id} product={product} index={index} />
+          {featuredProducts.map((product, index) => (
+            <ProductCard 
+              key={product.id} 
+              product={product} 
+              index={index} 
+              onAddToCart={handleAddToCart} 
+            />
           ))}
         </div>
         
@@ -77,20 +56,30 @@ const FeaturedProducts = () => {
           viewport={{ once: true }}
           className="text-center mt-12"
         >
-          <Button 
-            variant="outline" 
-            size="lg" 
-            className="border-navy-400 text-navy-700 hover:bg-navy-100/50"
-          >
-            View All Products
-          </Button>
+          <Link to="/shop">
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="border-navy-400 text-navy-700 hover:bg-navy-100/50"
+            >
+              View All Products
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </section>
   );
 };
 
-const ProductCard = ({ product, index }: { product: Product, index: number }) => {
+const ProductCard = ({ 
+  product, 
+  index, 
+  onAddToCart 
+}: { 
+  product: any, 
+  index: number, 
+  onAddToCart: (id: number) => void 
+}) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -105,26 +94,38 @@ const ProductCard = ({ product, index }: { product: Product, index: number }) =>
               NEW
             </div>
           )}
-          <motion.div 
-            className="aspect-square overflow-hidden rounded-lg bg-gray-100 mb-4"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
-          >
-            <img 
-              src={product.image} 
-              alt={product.name} 
-              className="h-full w-full object-cover object-center" 
-            />
-          </motion.div>
+          <Link to={`/product/${product.id}`}>
+            <motion.div 
+              className="aspect-square overflow-hidden rounded-lg bg-gray-100 mb-4"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+            >
+              <img 
+                src={product.image} 
+                alt={product.name} 
+                className="h-full w-full object-cover object-center" 
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop";
+                }}
+              />
+            </motion.div>
+          </Link>
         </div>
         <div className="p-4 flex-grow flex flex-col">
           <span className="text-xs text-gray-500 uppercase tracking-wider">{product.category}</span>
-          <h3 className="font-semibold text-lg mt-1 text-navy-800">{product.name}</h3>
+          <Link to={`/product/${product.id}`}>
+            <h3 className="font-semibold text-lg mt-1 text-navy-800 hover:text-bottle-500 transition-colors">
+              {product.name}
+            </h3>
+          </Link>
+          <p className="text-sm text-gray-600 mt-2 line-clamp-2">{product.description}</p>
           <div className="mt-auto pt-4 flex items-center justify-between">
             <span className="font-medium text-lg">${product.price.toFixed(2)}</span>
             <Button 
               size="sm" 
               className="bg-navy-700 hover:bg-navy-800 text-white rounded-full"
+              onClick={() => onAddToCart(product.id)}
             >
               <ShoppingCart className="h-4 w-4 mr-1" /> Add
             </Button>

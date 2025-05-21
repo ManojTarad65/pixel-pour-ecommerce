@@ -1,6 +1,7 @@
 
 import { motion } from 'framer-motion';
 import { Button } from './ui/button';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   const containerVariants = {
@@ -20,7 +21,7 @@ const Hero = () => {
       opacity: 1, 
       transition: { 
         duration: 0.8,
-        ease: [0.6, 0.05, -0.01, 0.9]
+        ease: "easeOut"
       } 
     }
   };
@@ -72,19 +73,23 @@ const Hero = () => {
             className="text-lg text-navy-700 mb-8 leading-relaxed"
             variants={itemVariants}
           >
-            Elevate your hydration experience with our premium collection of designer bottles. Sustainable, stylish, and built to last.
+            Elevate your hydration experience with our premium collection of designer bottles. Sustainable, stylish, and built to last for all your adventures.
           </motion.p>
           
           <motion.div 
             className="flex flex-wrap gap-4"
             variants={itemVariants}
           >
-            <Button size="lg" className="bg-bottle-600 hover:bg-bottle-700 text-white">
-              Shop Collection
-            </Button>
-            <Button size="lg" variant="outline" className="border-bottle-400 text-bottle-600 hover:bg-bottle-50">
-              Learn More
-            </Button>
+            <Link to="/shop">
+              <Button size="lg" className="bg-bottle-600 hover:bg-bottle-700 text-white">
+                Shop Collection
+              </Button>
+            </Link>
+            <Link to="/about">
+              <Button size="lg" variant="outline" className="border-bottle-400 text-bottle-600 hover:bg-bottle-50">
+                Learn More
+              </Button>
+            </Link>
           </motion.div>
         </motion.div>
         
