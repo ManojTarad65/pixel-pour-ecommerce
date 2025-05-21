@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MenuIcon, X, ShoppingCart, Search, User, LogIn } from 'lucide-react';
@@ -28,7 +27,7 @@ const Navbar: React.FC = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const isMobile = useIsMobile();
   const { totalItems } = useCart();
-  const { user, isAuthenticated, logout } = useUser();
+  const { user, isAuthenticated, login, logout } = useUser();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,6 +59,10 @@ const Navbar: React.FC = () => {
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
   ];
+
+  const handleAuthUser = (user) => {
+    login(user);
+  };
 
   return (
     <>
@@ -215,7 +218,7 @@ const Navbar: React.FC = () => {
       <AuthModal 
         isOpen={isAuthModalOpen} 
         onClose={() => setIsAuthModalOpen(false)}
-        onAuthenticate={(user) => useUser().login(user)}
+        onAuthenticate={handleAuthUser}
       />
     </>
   );
