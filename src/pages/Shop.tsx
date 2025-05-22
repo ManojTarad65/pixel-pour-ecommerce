@@ -13,7 +13,6 @@ import { products } from '@/data/products';
 
 const categories = ["All", "Classic", "Thermal", "Insulated", "Modern", "Sports", "Glass", "Stainless Steel", "Kids"];
 
-// This is a basic shop page
 const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const { addToCart } = useCart();
@@ -40,10 +39,10 @@ const Shop = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-b from-[#0f172a] to-[#1e293b]">
       <Navbar />
       <main>
-        <div className="pt-24 pb-16 bg-navy-50">
+        <div className="pt-24 pb-16 gradient-ocean">
           <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -51,15 +50,15 @@ const Shop = () => {
               transition={{ duration: 0.7 }}
               className="text-center"
             >
-              <h1 className="text-4xl md:text-5xl font-bold text-navy-800 mb-4">Shop All Bottles</h1>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Shop All Bottles</h1>
+              <p className="text-lg text-indigo-200 max-w-2xl mx-auto">
                 Browse our complete collection of premium bottles designed for every lifestyle.
               </p>
             </motion.div>
           </div>
         </div>
         
-        <div className="py-12 container mx-auto px-4">
+        <div className="py-12 container mx-auto px-4 bg-gradient-to-t from-[#0f172a] to-transparent">
           {/* Category Filter */}
           <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
             {categories.map((category, index) => (
@@ -68,12 +67,14 @@ const Shop = () => {
                 onClick={() => setSelectedCategory(category)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                   selectedCategory === category 
-                    ? 'bg-bottle-600 text-white' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg' 
+                    : 'bg-white/10 text-indigo-100 hover:bg-white/20 backdrop-blur-sm'
                 }`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 + index * 0.05, duration: 0.5 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 {category}
               </motion.button>
@@ -95,7 +96,7 @@ const Shop = () => {
 
           {filteredProducts.length === 0 && (
             <div className="text-center py-10">
-              <p className="text-xl text-gray-500">No products found in this category.</p>
+              <p className="text-xl text-indigo-300">No products found in this category.</p>
             </div>
           )}
         </div>
@@ -123,39 +124,39 @@ const ProductCard = ({
       transition={{ duration: 0.7, delay: index * 0.1 }}
       viewport={{ once: true }}
     >
-      <Card className="bottle-card group relative h-full flex flex-col">
+      <Card className="bottle-card glass group relative h-full flex flex-col border-indigo-300/20 bg-white/5 backdrop-blur-sm">
         <div className="relative pt-4 px-4 overflow-hidden">
           {product.isNew && (
-            <div className="absolute top-6 left-6 z-10 bg-bottle-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+            <div className="absolute top-6 left-6 z-10 bg-gradient-to-r from-pink-500 to-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
               NEW
             </div>
           )}
           <Link to={`/product/${product.id}`}>
             <motion.div 
-              className="aspect-square overflow-hidden rounded-lg bg-gray-100 mb-4"
+              className="aspect-square overflow-hidden rounded-lg bg-gradient-to-br from-indigo-900/30 to-purple-900/30 mb-4"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
             >
               <img 
                 src={product.image} 
                 alt={product.name} 
-                className="h-full w-full object-cover object-center" 
+                className="h-full w-full object-cover object-center hover:opacity-90 transition-opacity" 
               />
             </motion.div>
           </Link>
         </div>
         <div className="p-4 flex-grow flex flex-col">
-          <span className="text-xs text-gray-500 uppercase tracking-wider">{product.category}</span>
-          <Link to={`/product/${product.id}`} className="hover:text-bottle-600">
-            <h3 className="font-semibold text-lg mt-1 text-navy-800">{product.name}</h3>
+          <span className="text-xs text-indigo-300 uppercase tracking-wider">{product.category}</span>
+          <Link to={`/product/${product.id}`} className="hover:text-purple-400 transition-colors">
+            <h3 className="font-semibold text-lg mt-1 text-white">{product.name}</h3>
           </Link>
-          <p className="text-sm text-gray-600 mt-2 line-clamp-2">{product.description}</p>
+          <p className="text-sm text-indigo-200 mt-2 line-clamp-2">{product.description}</p>
           <div className="mt-auto pt-4">
-            <div className="font-medium text-lg mb-3">${product.price.toFixed(2)}</div>
+            <div className="font-medium text-lg mb-3 text-white">${product.price.toFixed(2)}</div>
             <div className="grid grid-cols-2 gap-2">
               <Button 
                 size="sm" 
-                className="bg-navy-700 hover:bg-navy-800 text-white"
+                className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white shadow-md"
                 onClick={() => addToCart(product.id)}
               >
                 <ShoppingCart className="h-4 w-4 mr-1" /> Add
@@ -163,7 +164,7 @@ const ProductCard = ({
               <Button 
                 size="sm" 
                 variant="outline"
-                className="border-navy-400 text-navy-700 hover:bg-navy-100/50"
+                className="border-indigo-400/30 text-indigo-100 hover:bg-indigo-600/20 hover:text-white"
                 onClick={() => buyNow(product.id)}
               >
                 Buy Now

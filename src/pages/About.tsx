@@ -34,10 +34,10 @@ const About = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-b from-[#0f172a] to-[#1e293b]">
       <Navbar />
       <main>
-        <div className="pt-24 pb-16 bg-navy-50">
+        <div className="pt-24 pb-16 gradient-ocean">
           <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -45,8 +45,8 @@ const About = () => {
               transition={{ duration: 0.7 }}
               className="text-center"
             >
-              <h1 className="text-4xl md:text-5xl font-bold text-navy-800 mb-4">About PixelPour</h1>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">About PixelPour</h1>
+              <p className="text-lg text-indigo-200 max-w-2xl mx-auto">
                 Learn about our mission to create sustainable, stylish bottles for everyday adventures.
               </p>
             </motion.div>
@@ -60,13 +60,14 @@ const About = () => {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7 }}
               viewport={{ once: true }}
+              className="glass p-8 rounded-lg"
             >
-              <h2 className="text-3xl font-bold text-navy-800 mb-4">Our Mission</h2>
-              <div className="bg-bottle-50 w-20 h-1 mb-6"></div>
-              <p className="text-gray-600 mb-4">
+              <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-indigo-300 bg-clip-text text-transparent mb-4">Our Mission</h2>
+              <div className="bg-gradient-to-r from-violet-500 to-indigo-500 w-20 h-1 mb-6"></div>
+              <p className="text-indigo-100 mb-4">
                 At PixelPour, we believe that sustainable living should be both beautiful and functional. Our mission is to create products that inspire people to reduce single-use plastic waste without sacrificing style or convenience.
               </p>
-              <p className="text-gray-600">
+              <p className="text-indigo-100">
                 Each bottle we design is carefully crafted to combine innovative technology with timeless aesthetics, ensuring that sustainability never comes at the expense of performance or design.
               </p>
             </motion.div>
@@ -76,12 +77,12 @@ const About = () => {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
               viewport={{ once: true }}
-              className="rounded-lg overflow-hidden"
+              className="overflow-hidden"
             >
               <img 
                 src="https://images.unsplash.com/photo-1562766879-ce8c6f04f70d?w=800&auto=format&fit=crop" 
                 alt="Team working on bottle designs" 
-                className="w-full h-auto rounded-lg shadow-lg"
+                className="w-full h-auto rounded-lg shadow-lg hover:scale-105 transition-transform duration-700"
               />
             </motion.div>
           </div>
@@ -93,16 +94,16 @@ const About = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl font-bold text-navy-800 mb-4">Our Story</h2>
-            <div className="bg-bottle-50 w-20 h-1 mx-auto mb-6"></div>
-            <p className="text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-indigo-300 bg-clip-text text-transparent mb-4">Our Story</h2>
+            <div className="bg-gradient-to-r from-violet-500 to-indigo-500 w-20 h-1 mx-auto mb-6"></div>
+            <p className="text-indigo-200 max-w-3xl mx-auto">
               From a small workshop to a global brand, our journey has been driven by passion, innovation, and commitment to sustainability.
             </p>
           </motion.div>
 
           <div className="relative">
             {/* Timeline line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-navy-100"></div>
+            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500"></div>
             
             {/* Timeline items */}
             <div className="space-y-16">
@@ -117,12 +118,12 @@ const About = () => {
                 >
                   <div className={`flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}>
                     <div className={`w-1/2 ${index % 2 === 0 ? 'pr-12 text-right' : 'pl-12'}`}>
-                      <h3 className="text-xl font-bold text-navy-800">{item.title}</h3>
-                      <p className="text-gray-600 mt-2">{item.content}</p>
+                      <h3 className="text-xl font-bold text-white">{item.title}</h3>
+                      <p className="text-indigo-200 mt-2">{item.content}</p>
                     </div>
                     
                     <div className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center">
-                      <div className="rounded-full h-12 w-12 bg-bottle-600 flex items-center justify-center text-white font-bold shadow-lg z-10">
+                      <div className="rounded-full h-12 w-12 bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg z-10">
                         {item.year}
                       </div>
                     </div>
@@ -139,13 +140,13 @@ const About = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
             viewport={{ once: true }}
-            className="mt-20 p-10 bg-navy-50 rounded-lg text-center"
+            className="mt-20 p-10 glass rounded-lg text-center"
           >
-            <h2 className="text-2xl font-bold text-navy-800 mb-4">Join Our Mission</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto mb-6">
+            <h2 className="text-2xl font-bold text-white mb-4">Join Our Mission</h2>
+            <p className="text-indigo-200 max-w-2xl mx-auto mb-6">
               Every PixelPour bottle purchased helps eliminate hundreds of single-use plastic bottles. Together, we can make a difference.
             </p>
-            <a href="/shop" className="inline-block bg-bottle-600 hover:bg-bottle-700 text-white font-medium px-6 py-3 rounded-md transition-colors">
+            <a href="/shop" className="inline-block bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-medium px-6 py-3 rounded-md transition-colors shadow-lg">
               Shop Our Collection
             </a>
           </motion.div>

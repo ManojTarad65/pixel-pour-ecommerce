@@ -68,7 +68,7 @@ const collections: Collection[] = [
 
 const Collections = () => {
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white">
+    <div className="min-h-screen bg-gradient-to-b from-[#0f172a] to-[#1e293b] text-white">
       <Navbar />
       <main>
         <div className="pt-24 pb-16 gradient-ocean">
@@ -80,14 +80,14 @@ const Collections = () => {
               className="text-center"
             >
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Our Collections</h1>
-              <p className="text-lg text-indigo-100 max-w-2xl mx-auto">
+              <p className="text-lg text-indigo-200 max-w-2xl mx-auto">
                 Explore our curated collections of premium bottles designed for every lifestyle.
               </p>
             </motion.div>
           </div>
         </div>
         
-        <div className="py-16 container mx-auto px-4 bg-gradient-to-b from-[#0f172a] to-indigo-900">
+        <div className="py-16 container mx-auto px-4 bg-gradient-to-b from-[#0f172a] to-[#1e293b]">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {collections.map((collection, index) => (
               <CollectionCard key={collection.id} collection={collection} index={index} />
@@ -99,14 +99,14 @@ const Collections = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.5 }}
             viewport={{ once: true }}
-            className="mt-20 p-8 glass rounded-lg text-center"
+            className="mt-20 p-8 glass rounded-lg text-center backdrop-blur-md"
           >
             <h2 className="text-2xl font-bold text-white mb-4">Looking for Something Special?</h2>
-            <p className="text-indigo-100 mb-6">
+            <p className="text-indigo-200 mb-6">
               We offer custom corporate orders and personalized bottles for events, gifts, and promotions.
             </p>
             <Button 
-              className="bg-accent hover:bg-accent/90 text-white"
+              className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white shadow-lg"
               onClick={() => window.location.href = '/contact'}
             >
               Contact Us
@@ -128,13 +128,14 @@ const CollectionCard = ({ collection, index }: { collection: Collection, index: 
       viewport={{ once: true }}
       className="group cursor-pointer"
       onClick={() => window.location.href = '/shop'}
+      whileHover={{ y: -5 }}
     >
-      <div className={`relative overflow-hidden rounded-lg shadow-md h-80 ${collection.gradient}`}>
-        <div className="absolute inset-0 bg-black/30 z-10"></div>
+      <div className={`relative overflow-hidden rounded-lg shadow-lg h-80 ${collection.gradient}`}>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent z-10"></div>
         <img 
           src={collection.image} 
           alt={collection.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             target.src = "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop";
@@ -149,7 +150,7 @@ const CollectionCard = ({ collection, index }: { collection: Collection, index: 
             <motion.div 
               initial={{ opacity: 0 }}
               whileHover={{ opacity: 1 }}
-              className="glass rounded-full px-3 py-1 text-white text-sm font-medium"
+              className="glass rounded-full px-3 py-1 text-white text-sm font-medium backdrop-blur-lg"
             >
               View Collection
             </motion.div>
@@ -162,7 +163,7 @@ const CollectionCard = ({ collection, index }: { collection: Collection, index: 
         <div className="mt-3 flex justify-between items-center">
           <Button 
             variant="ghost" 
-            className="text-indigo-200 hover:text-white hover:bg-indigo-800/50"
+            className="text-indigo-200 hover:text-white hover:bg-indigo-800/30"
             onClick={(e) => {
               e.stopPropagation();
               window.location.href = '/shop';
