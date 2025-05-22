@@ -8,7 +8,7 @@ const categories = [
     id: 1,
     name: "Thermal Bottles",
     description: "Keep your beverages at the perfect temperature",
-    image: "https://images.unsplash.com/photo-1610631787330-c3eac43fbf60?w=600&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1610631787330-c3eac43fbf60?w=600&auto=format&fit=crop&q=80",
     color: "bg-blue-100",
     count: 12,
     path: "/shop"
@@ -17,7 +17,7 @@ const categories = [
     id: 2,
     name: "Sport Bottles",
     description: "Hydration companions for active lifestyles",
-    image: "https://images.unsplash.com/photo-1612004285861-9e8bd32a4d9f?w=600&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1612004285861-9e8bd32a4d9f?w=600&auto=format&fit=crop&q=80",
     color: "bg-green-100",
     count: 8,
     path: "/shop"
@@ -26,7 +26,7 @@ const categories = [
     id: 3,
     name: "Glass Bottles",
     description: "Elegant designs with eco-friendly materials",
-    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop&q=80",
     color: "bg-purple-100",
     count: 15,
     path: "/shop"
@@ -90,6 +90,10 @@ const Categories = () => {
                       src={category.image}
                       alt={category.name}
                       className="h-full w-full object-cover object-center"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop&q=80";
+                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </div>
