@@ -2,6 +2,7 @@
 import React from 'react';
 import { User } from 'lucide-react';
 import { useUser } from '@/contexts/UserContext';
+import { Link } from 'react-router-dom';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,7 +29,9 @@ const UserMenu: React.FC = () => {
           Hello, {user?.name || 'User'}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Profile</DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/profile" className="w-full">Profile</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem>Orders</DropdownMenuItem>
         <DropdownMenuItem>Favorites</DropdownMenuItem>
         <DropdownMenuSeparator />
