@@ -9,7 +9,7 @@ const categories = [
     name: "Thermal Bottles",
     description: "Keep your beverages at the perfect temperature",
     image: "https://images.unsplash.com/photo-1610631787330-c3eac43fbf60?w=600&auto=format&fit=crop&q=80",
-    color: "bg-blue-100",
+    color: "bg-indigo-100/20",
     count: 12,
     path: "/shop"
   },
@@ -18,7 +18,7 @@ const categories = [
     name: "Sport Bottles",
     description: "Hydration companions for active lifestyles",
     image: "https://images.unsplash.com/photo-1612004285861-9e8bd32a4d9f?w=600&auto=format&fit=crop&q=80",
-    color: "bg-green-100",
+    color: "bg-teal-100/20",
     count: 8,
     path: "/shop"
   },
@@ -27,7 +27,7 @@ const categories = [
     name: "Glass Bottles",
     description: "Elegant designs with eco-friendly materials",
     image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop&q=80",
-    color: "bg-purple-100",
+    color: "bg-purple-100/20",
     count: 15,
     path: "/shop"
   },
@@ -57,7 +57,7 @@ const Categories = () => {
   };
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -66,8 +66,8 @@ const Categories = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-navy-800 mb-4">Explore Categories</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Explore Categories</h2>
+          <p className="text-lg text-indigo-100 max-w-2xl mx-auto">
             Discover the perfect bottle for your lifestyle from our curated collections.
           </p>
         </motion.div>
@@ -79,10 +79,10 @@ const Categories = () => {
           viewport={{ once: true }}
           className="grid grid-cols-1 md:grid-cols-3 gap-8"
         >
-          {categories.map((category, idx) => (
+          {categories.map((category) => (
             <motion.div key={category.id} variants={itemVariants}>
               <Link to={category.path}>
-                <Card className="h-full overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow duration-300">
+                <Card className="h-full overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow duration-300 bg-white/10 backdrop-blur-sm border border-white/20">
                   <div className={`aspect-square relative overflow-hidden ${category.color}`}>
                     <motion.img
                       whileHover={{ scale: 1.05 }}
@@ -95,16 +95,16 @@ const Categories = () => {
                         target.src = "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop&q=80";
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </div>
-                  <div className="p-6">
-                    <h3 className="font-semibold text-xl text-navy-800 group-hover:text-bottle-600 transition-colors">
+                  <div className="p-6 bg-gradient-to-r from-indigo-900/60 to-purple-800/60 text-white">
+                    <h3 className="font-semibold text-xl group-hover:text-indigo-200 transition-colors">
                       {category.name}
                     </h3>
-                    <p className="text-gray-600 mt-2">{category.description}</p>
+                    <p className="text-indigo-100/90 mt-2">{category.description}</p>
                     <div className="mt-4 flex justify-between items-center">
-                      <span className="text-sm text-gray-500">{category.count} products</span>
-                      <span className="text-bottle-600 font-medium group-hover:translate-x-1 transition-transform duration-300">
+                      <span className="text-sm text-indigo-100/70">{category.count} products</span>
+                      <span className="text-indigo-200 font-medium group-hover:translate-x-1 transition-transform duration-300">
                         Explore →
                       </span>
                     </div>
