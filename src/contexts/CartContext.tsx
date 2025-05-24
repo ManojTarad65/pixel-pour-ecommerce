@@ -1,6 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from '@/components/ui/sonner';
+import { useUser } from './UserContext';
 
 export interface CartItem {
   id: number;
@@ -12,7 +13,7 @@ export interface CartItem {
 
 interface CartContextType {
   items: CartItem[];
-  addToCart: (product: any, quantity?: number) => void;
+  addToCart: (product: any, quantity?: number) => boolean;
   removeFromCart: (productId: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
   clearCart: () => void;
@@ -26,18 +27,24 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [items, setItems] = useState<CartItem[]>([]);
   const [totalItems, setTotalItems] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const { isAuthenticated } = useUser();
 
   useEffect(() => {
-    // Load cart from localStorage
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-      try {
-        setItems(JSON.parse(savedCart));
-      } catch (e) {
-        console.error("Error parsing saved cart:", e);
+    // Load cart from localStorage only if authenticated
+    if (isAuthenticated) {
+      const savedCart = localStorage.getItem('cart');
+      if (savedCart) {
+        try {
+          setItems(JSON.parse(savedCart));
+        } catch (e) {
+          console.error("Error parsing saved cart:", e);
+        }
       }
+    } else {
+      // Clear cart if not authenticated
+      setItems([]);
     }
-  }, []);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     // Update totals whenever items change
@@ -47,11 +54,20 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setTotalItems(newTotalItems);
     setTotalPrice(newTotalPrice);
     
-    // Save to localStorage
-    localStorage.setItem('cart', JSON.stringify(items));
-  }, [items]);
+    // Save to localStorage only if authenticated
+    if (isAuthenticated) {
+      localStorage.setItem('cart', JSON.stringify(items));
+    }
+  }, [items, isAuthenticated]);
 
-  const addToCart = (product: any, quantity = 1) => {
+  const addToCart = (product: any, quantity = 1): boolean => {
+    if (!isAuthenticated) {
+      toast.error("Please login to add items to cart", {
+        description: "You need to be logged in to add items to your cart."
+      });
+      return false;
+    }
+
     setItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id);
       
@@ -75,6 +91,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
     
     toast.success(`Added "${product.name}" to cart`);
+    return true;
   };
 
   const removeFromCart = (productId: number) => {

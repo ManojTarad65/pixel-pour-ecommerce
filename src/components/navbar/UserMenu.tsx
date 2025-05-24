@@ -32,8 +32,10 @@ const UserMenu: React.FC = () => {
         <DropdownMenuItem asChild>
           <Link to="/profile" className="w-full">Profile</Link>
         </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/favorites" className="w-full">Favorites</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem>Orders</DropdownMenuItem>
-        <DropdownMenuItem>Favorites</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={logout}>
           Logout

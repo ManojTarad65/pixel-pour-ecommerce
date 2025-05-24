@@ -4,9 +4,11 @@ import { useParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, Star } from 'lucide-react';
+import { ShoppingCart, Star, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useCart } from '@/contexts/CartContext';
+import { useFavorites } from '@/contexts/FavoritesContext';
+import { useUser } from '@/contexts/UserContext';
 import { toast } from '@/components/ui/sonner';
 import ReviewForm from '@/components/product/ReviewForm';
 import ReviewList from '@/components/product/ReviewList';
@@ -24,10 +26,13 @@ interface Review {
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { addToCart } = useCart();
+  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
+  const { isAuthenticated } = useUser();
   const [quantity, setQuantity] = useState(1);
   const [reviews, setReviews] = useState<Review[]>([]);
   
   const product = products.find(p => p.id === parseInt(id || '0'));
+  const isFav = product ? isFavorite(product.id) : false;
   
   useEffect(() => {
     // In a real app, fetch reviews from API
@@ -53,16 +58,36 @@ const ProductDetail = () => {
   
   const handleAddToCart = () => {
     if (product) {
-      addToCart(product, quantity);
+      const success = addToCart(product, quantity);
+      if (!success && !isAuthenticated) {
+        // Error already shown in addToCart
+      }
     }
   };
   
   const handleBuyNow = () => {
     if (product) {
-      addToCart(product, quantity);
-      toast.success("Proceeding to checkout...", {
-        description: "In a real store, this would redirect to checkout."
-      });
+      const success = addToCart(product, quantity);
+      if (success) {
+        toast.success("Proceeding to checkout...", {
+          description: "In a real store, this would redirect to checkout."
+        });
+      }
+    }
+  };
+
+  const handleToggleFavorite = () => {
+    if (!product) return;
+    
+    if (!isAuthenticated) {
+      toast.error("Please login to add favorites");
+      return;
+    }
+    
+    if (isFav) {
+      removeFromFavorites(product.id);
+    } else {
+      addToFavorites(product);
     }
   };
   
@@ -109,9 +134,26 @@ const ProductDetail = () => {
             className="flex flex-col"
           >
             <div>
-              <span className="text-sm text-gray-500 uppercase tracking-wider">
-                {product.category}
-              </span>
+              <div className="flex justify-between items-start">
+                <span className="text-sm text-gray-500 uppercase tracking-wider">
+                  {product.category}
+                </span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={`${
+                    isFav 
+                      ? 'text-red-500 hover:text-red-600' 
+                      : 'text-gray-400 hover:text-red-500'
+                  }`}
+                  onClick={handleToggleFavorite}
+                >
+                  <Heart 
+                    size={24} 
+                    fill={isFav ? 'currentColor' : 'none'}
+                  />
+                </Button>
+              </div>
               <h1 className="text-3xl md:text-4xl font-bold text-navy-800 mt-1">
                 {product.name}
               </h1>

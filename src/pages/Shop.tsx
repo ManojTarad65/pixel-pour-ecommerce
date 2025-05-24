@@ -4,11 +4,13 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Heart } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { toast } from '@/components/ui/sonner';
 import { Link } from 'react-router-dom';
 import { useCart } from '@/contexts/CartContext';
+import { useFavorites } from '@/contexts/FavoritesContext';
+import { useUser } from '@/contexts/UserContext';
 import { products } from '@/data/products';
 
 const categories = ["All", "Classic", "Thermal", "Insulated", "Modern", "Sports", "Glass", "Stainless Steel", "Kids"];
@@ -16,6 +18,7 @@ const categories = ["All", "Classic", "Thermal", "Insulated", "Modern", "Sports"
 const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const { addToCart } = useCart();
+  const { isAuthenticated } = useUser();
 
   const filteredProducts = selectedCategory === "All" 
     ? products 
@@ -24,17 +27,22 @@ const Shop = () => {
   const handleAddToCart = (productId: number) => {
     const product = products.find(p => p.id === productId);
     if (product) {
-      addToCart(product);
+      const success = addToCart(product);
+      if (!success && !isAuthenticated) {
+        // This will trigger the auth modal through the navbar
+      }
     }
   };
 
   const handleBuyNow = (productId: number) => {
     const product = products.find(p => p.id === productId);
     if (product) {
-      addToCart(product);
-      toast.success(`Processing purchase for ${product?.name}!`, {
-        description: "This would redirect to checkout in a real store."
-      });
+      const success = addToCart(product);
+      if (success) {
+        toast.success(`Processing purchase for ${product?.name}!`, {
+          description: "This would redirect to checkout in a real store."
+        });
+      }
     }
   };
 
@@ -117,6 +125,23 @@ const ProductCard = ({
   addToCart: (id: number) => void,
   buyNow: (id: number) => void
 }) => {
+  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
+  const { isAuthenticated } = useUser();
+  const isFav = isFavorite(product.id);
+
+  const handleToggleFavorite = () => {
+    if (!isAuthenticated) {
+      toast.error("Please login to add favorites");
+      return;
+    }
+    
+    if (isFav) {
+      removeFromFavorites(product.id);
+    } else {
+      addToFavorites(product);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -131,6 +156,21 @@ const ProductCard = ({
               NEW
             </div>
           )}
+          <Button
+            variant="ghost"
+            size="icon"
+            className={`absolute top-6 right-6 z-10 ${
+              isFav 
+                ? 'text-red-500 hover:text-red-600' 
+                : 'text-white/60 hover:text-red-500'
+            }`}
+            onClick={handleToggleFavorite}
+          >
+            <Heart 
+              size={18} 
+              fill={isFav ? 'currentColor' : 'none'}
+            />
+          </Button>
           <Link to={`/product/${product.id}`}>
             <motion.div 
               className="aspect-square overflow-hidden rounded-lg bg-gradient-to-br from-indigo-900/30 to-purple-900/30 mb-4"
