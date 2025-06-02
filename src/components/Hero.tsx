@@ -109,11 +109,7 @@ const Hero = () => {
               className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-56 md:w-72 z-20 animate-float drop-shadow-[0_0_15px_rgba(139,92,246,0.3)]"
             />
             {/* Additional bottles for design */}
-            <motion.img 
-              src="https://images.unsplash.com/photo-1581152309595-c304b4d05c14?w=600&auto=format&fit=crop" 
-              alt="Stylish bottle" 
-              className="absolute left-5 top-1/4 w-32 md:w-44 rotate-12 opacity-80 z-10 drop-shadow-[0_0_10px_rgba(79,70,229,0.2)]"
-            />
+           
             <motion.img 
               src="https://images.unsplash.com/photo-1610631687337-04552bfb8d85?w=600&auto=format&fit=crop" 
               alt="Modern bottle" 

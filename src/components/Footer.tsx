@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Twitter, Mail, MapPin, Phone } from 'lucide-react';
+import {  Mail, MapPin, Phone, Github, Linkedin } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -14,15 +14,13 @@ const Footer = () => {
               Premium bottles designed for everyday adventures. Sustainable, stylish, and built to last.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-indigo-500 hover:text-indigo-700 transition-colors">
-                <Facebook size={20} />
+              <a href="https://github.com/ManojTarad65" className="text-indigo-500 hover:text-indigo-700 transition-colors">
+                <Github size={20} />
               </a>
-              <a href="#" className="text-indigo-500 hover:text-indigo-700 transition-colors">
-                <Instagram size={20} />
+              <a href="https://www.linkedin.com/in/manoj-tarad-0b779625a/" className="text-indigo-500 hover:text-indigo-700 transition-colors">
+                <Linkedin size={20} />
               </a>
-              <a href="#" className="text-indigo-500 hover:text-indigo-700 transition-colors">
-                <Twitter size={20} />
-              </a>
+              
             </div>
           </div>
           
@@ -56,15 +54,15 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start">
                 <MapPin size={20} className="mr-2 mt-1 flex-shrink-0 text-violet-500" />
-                <span className="text-gray-600">123 Bottle Street, Design District, NY 10001</span>
+                <span className="text-gray-600">Bikaner, Rajasthan</span>
               </li>
               <li className="flex items-center">
                 <Phone size={20} className="mr-2 flex-shrink-0 text-violet-500" />
-                <span className="text-gray-600">(123) 456-7890</span>
+                <span className="text-gray-600">+91 7877018453</span>
               </li>
               <li className="flex items-center">
                 <Mail size={20} className="mr-2 flex-shrink-0 text-violet-500" />
-                <span className="text-gray-600">info@pixelpour.com</span>
+                <span className="text-gray-600">manojtarad65@gmail.com</span>
               </li>
             </ul>
           </div>
@@ -78,7 +76,7 @@ const Footer = () => {
             </p>
             <div className="flex space-x-6">
               <a href="#" className="text-gray-500 hover:text-indigo-700 text-sm transition-colors">Privacy Policy</a>
-              <a href="#" className="text-gray-500 hover:text-indigo-700 text-sm transition-colors">Terms of Service</a>
+              <a href="#" className="text-gray-500 hover:text-indigo-700 text-sm transition-colors">Terms & Conditions</a>
               <a href="#" className="text-gray-500 hover:text-indigo-700 text-sm transition-colors">Sitemap</a>
             </div>
           </div>
